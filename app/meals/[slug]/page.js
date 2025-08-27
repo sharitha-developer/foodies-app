@@ -2,6 +2,17 @@ import classes from './page.module.css';
 import Image from 'next/image';
 import { getMeal } from '@/lib/meals';
 import { notFound } from 'next/navigation';
+
+export async function generateMetadata(){
+  const meal = getMeal(params.mealSlug);
+    if(!meal){
+    notFound();
+  }
+  return {
+    title:meal.title,
+    description: meal.summary,
+  };
+}
 export default function MealDetailPage({params}) {
   const meal = getMeal(params.slug);
 
@@ -13,8 +24,8 @@ export default function MealDetailPage({params}) {
   return (
     <>
       <header className={classes.header} >
-        <div className={classes.image}>
-          <Image src={meal.image} fill />
+        <div className={classes.image}>        
+          <Image src={`https://sharitha-nextjs-demo-users-image.s3.ap-southeast-2.amazonaws.com/${meal.image}`} alt={meal.title} fill />
         </div>
         <div className={classes.headerText} >
           <h1>{meal.title}</h1>
